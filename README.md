@@ -10,7 +10,7 @@ Plantilla reutilizable para iniciar proyectos web con un stack PERN, complementa
 | Backend | Node.js y Express | API REST y lógica de servidor |
 | Base de datos | PostgreSQL | Persistencia relacional |
 | ORM y migraciones | Prisma ORM y Prisma Migrate | Acceso tipado a PostgreSQL y gestión versionada del esquema |
-| Servicio auxiliar | Redis | Servicio disponible para las necesidades que requiera cada proyecto basado en la plantilla |
+| Procesamiento asíncrono | BullMQ, Redis y worker Node.js | Encolar y procesar trabajos fuera de la petición HTTP |
 | Correo de desarrollo | Mailpit | Captura y consulta local de correos generados durante el desarrollo |
 | Entorno local | Docker Engine y Docker Compose | Construcción y ejecución coordinada de los servicios de desarrollo |
 
