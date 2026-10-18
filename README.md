@@ -18,6 +18,8 @@ Plantilla reutilizable para iniciar proyectos web con un stack PERN, complementa
 
 La plantilla reúne estos componentes para levantar y conectar los servicios locales mediante una guía ordenada, sin depender de instalaciones de Node.js en el equipo anfitrión.
 
+La secuencia de construcción, la red de servicios y las comprobaciones están en la [guía del entorno local con Docker Compose](docs/docker/guia-de-construccion-docker-compose.md).
+
 Esta plantilla no corresponde a una aplicación de negocio específica. Cada proyecto derivado definirá sus propias funcionalidades, variables de entorno y uso de los servicios auxiliares.
 
 ## Ramas
