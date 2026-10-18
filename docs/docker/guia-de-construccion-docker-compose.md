@@ -4,7 +4,7 @@ Esta guía define una secuencia desde un repositorio limpio hasta un entorno loc
 
 ## Requisitos y convenciones
 
-- Docker Engine 28 o posterior, Docker CLI y el plugin de Compose, invocado como `docker compose`. La guía no usa el ejecutable independiente `docker-compose`. Docker documenta una excepción en versiones anteriores a Engine 28: otros equipos en el mismo segmento de red podían alcanzar puertos enlazados a loopback. [Publicación de puertos en Docker](https://docs.docker.com/engine/network/port-publishing/) y [plugin de Docker Compose](https://docs.docker.com/compose/install/).
+- Docker Engine 28 o posterior, Docker CLI y Docker Compose plugin 2.17.0 o posterior, invocado como `docker compose`. Se requiere esa versión de Compose para usar `--wait-timeout` en el comando de inicio. La guía no usa el ejecutable independiente `docker-compose`. Docker documenta una excepción en versiones anteriores a Engine 28: otros equipos en el mismo segmento de red podían alcanzar puertos enlazados a loopback. [Notas oficiales de Compose 2.17.0](https://github.com/docker/compose/releases/tag/v2.17.0), [publicación de puertos en Docker](https://docs.docker.com/engine/network/port-publishing/) y [plugin de Docker Compose](https://docs.docker.com/compose/install/).
 - Git, `curl` y una terminal Bash en Linux, macOS o WSL 2. Los comandos que crean archivos se ejecutan desde la raíz del repositorio, salvo cuando se indique otro directorio.
 - No hace falta instalar Node.js ni npm en el equipo anfitrión: los comandos de Node se ejecutan en contenedores temporales y las aplicaciones se ejecutan en Compose.
 - `.env.example` contiene valores ilustrativos; `.env` es local y no se versiona.
@@ -661,14 +661,14 @@ Valida la sintaxis e interpolación antes de crear contenedores. Si falta una va
 docker compose config --quiet
 ```
 
-Construye las imágenes de frontend/backend y arranca todos los servicios:
+Construye las imágenes y espera a que Compose termine de iniciar los servicios:
 
 ```bash
-docker compose up --build --detach
+docker compose up --build --detach --wait --wait-timeout 180
 docker compose ps
 ```
 
-La primera ejecución descarga las imágenes de PostgreSQL, Redis y Mailpit, instala dependencias mediante `npm ci`, genera Prisma Client y crea los volúmenes y la red del proyecto. Espera hasta que PostgreSQL, backend, Redis y frontend aparezcan como `healthy` o estén en ejecución. El worker no tiene endpoint HTTP; su comprobación está en los logs.
+La primera ejecución descarga las imágenes de PostgreSQL, Redis y Mailpit, instala dependencias mediante `npm ci`, genera Prisma Client y crea los volúmenes y la red del proyecto. La opción `--wait` hace que Compose espere hasta que los servicios con healthcheck estén saludables y los servicios sin healthcheck estén en ejecución; `--wait-timeout 180` limita esa espera a tres minutos. Si el comando falla por tiempo de espera, revisa `docker compose ps` y los logs del servicio que no inició correctamente. El worker no tiene endpoint HTTP; confirma su funcionamiento en los logs. [Referencia oficial de `docker compose up`](https://docs.docker.com/reference/cli/docker/compose/up/).
 
 ## 7. Comprobar cada servicio
 
