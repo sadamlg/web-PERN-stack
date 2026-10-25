@@ -773,7 +773,7 @@ const nextConfig = {
 export default nextConfig;
 ```
 
-4. Recrea el frontend para aplicar la variable y configuración:
+4. Reconstruye y recrea el frontend para aplicar la variable y configuración. El Dockerfile copia `next.config.mjs` a la imagen y Compose no lo monta como volumen:
 
 ```bash
 docker compose up --build --detach --force-recreate frontend
@@ -782,6 +782,8 @@ docker compose up --build --detach --force-recreate frontend
 Desde el otro dispositivo abre `http://<IP-LAN-del-anfitrión>:3000`. `0.0.0.0` en `ports` enlaza el puerto publicado a todas las interfaces IPv4 del anfitrión; no es la IP de la red bridge ni cambia las conexiones privadas entre contenedores. Usa esta opción sólo en una red local confiable y permite el puerto en el firewall si tu sistema lo bloquea. [Opción `allowedDevOrigins` de Next.js](https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins)
 
 Esta opción sólo publica el frontend en la LAN. La API permanece enlazada a `127.0.0.1:4000`; una página abierta en otro dispositivo no puede usar `localhost:4000` para llegar al anfitrión. Si la aplicación necesita llamadas de navegador a la API desde la LAN, hay que decidir por separado cómo publicar la API y configurar su origen/CORS. El acceso LAN al frontend no debe activarse como valor predeterminado de la plantilla.
+
+Si una aplicación derivada genera URL absolutas de imágenes u otros medios, configura también un origen que el otro dispositivo pueda alcanzar. La plantilla no define una variable de medios porque no genera esas URL.
 
 ## 10. Detener y limpiar
 
